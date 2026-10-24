@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>云OA 办公系统 - 考勤与审批</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-icon">云</div>
+      <div>
+        <div class="logo-name">云OA 办公系统</div>
+        <div class="logo-sub">考勤 · 审批 · 一站管理</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <div class="nav-item active" data-page="dashboard">📊 工作台</div>
+      <div class="nav-item" data-page="attendance">🕐 考勤打卡</div>
+      <div class="nav-item" data-page="leave">📝 发起审批</div>
+      <div class="nav-item" data-page="approve">✅ 待我审批</div>
+      <div class="nav-item" data-page="records">📁 审批记录</div>
+    </nav>
+    <div class="user-card">
+      <div class="avatar" id="userAvatar">张</div>
+      <div>
+        <div class="u-name" id="userName">张伟</div>
+        <div class="u-role" id="userRole">研发部 · 部门经理</div>
+      </div>
+    </div>
+    <div class="switch-user">
+      <label>切换身份（演示）</label>
+      <select id="userSelect"></select>
+    </div>
+  </aside>
+
+  <main class="main">
+    <!-- 工作台 -->
+    <section class="page active" id="page-dashboard">
+      <div class="page-head">
+        <h1>工作台</h1>
+        <div class="date" id="todayStr"></div>
+      </div>
+      <div class="stat-grid" id="statGrid"></div>
+      <div class="panel-row">
+        <div class="panel">
+          <div class="panel-title">本周考勤概览</div>
+          <div id="weekChart" class="week-chart"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">最新审批动态</div>
+          <div id="latestFlow" class="flow-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 考勤打卡 -->
+    <section class="page" id="page-attendance">
+      <div class="page-head"><h1>考勤打卡</h1></div>
+      <div class="att-layout">
+        <div class="panel clock-panel">
+          <div class="clock-time" id="clockTime">--:--:--</div>
+          <div class="clock-date" id="clockDate"></div>
+          <div class="clock-status" id="clockStatus">未打卡</div>
+          <div class="clock-btns">
+            <button class="btn primary" id="btnClockIn">上班打卡</button>
+            <button class="btn success" id="btnClockOut">下班打卡</button>
+          </div>
+          <div class="clock-tip" id="clockTip"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">本月打卡记录</div>
+          <table class="table" id="attTable">
+            <thead><tr><th>日期</th><th>星期</th><th>上班</th><th>下班</th><th>状态</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 发起审批 -->
+    <section class="page" id="page-leave">
+      <div class="page-head"><h1>发起审批</h1></div>
+      <div class="panel form-panel">
+        <div class="form-item">
+          <label>审批类型</label>
+          <div class="type-picker" id="typePicker">
+            <div class="type-item active" data-type="请假">🌴 请假申请</div>
+            <div class="type-item" data-type="报销">💰 报销申请</div>
+            <div class="type-item" data-type="加班">🌙 加班申请</div>
+            <div class="type-item" data-type="出差">✈️ 出差申请</div>
+          </div>
+        </div>
+        <div class="form-item" id="dateFields">
+          <label>起止时间</label>
+          <div class="inline">
+            <input type="date" id="fStart"><span>至</span><input type="date" id="fEnd">
+          </div>
+        </div>
+        <div class="form-item" id="amountField" style="display:none">
+          <label>报销金额（元）</label>
+          <input type="number" id="fAmount" placeholder="请输入金额">
+        </div>
+        <div class="form-item">
+          <label>审批人</label>
+          <select id="fApprover"></select>
+        </div>
+        <div class="form-item">
+          <label>事由说明</label>
+          <textarea id="fReason" rows="4" placeholder="请填写详细事由..."></textarea>
+        </div>
+        <button class="btn primary big" id="btnSubmitFlow">提交审批</button>
+      </div>
+    </section>
+
+    <!-- 待我审批 -->
+    <section class="page" id="page-approve">
+      <div class="page-head"><h1>待我审批</h1><span class="badge" id="pendingBadge">0</span></div>
+      <div id="pendingList" class="flow-cards"></div>
+    </section>
+
+    <!-- 审批记录 -->
+    <section class="page" id="page-records">
+      <div class="page-head"><h1>审批记录</h1></div>
+      <div class="filter-bar">
+        <button class="chip active" data-f="all">全部</button>
+        <button class="chip" data-f="待审批">待审批</button>
+        <button class="chip" data-f="已通过">已通过</button>
+        <button class="chip" data-f="已驳回">已驳回</button>
+      </div>
+      <div id="recordList" class="flow-cards"></div>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
